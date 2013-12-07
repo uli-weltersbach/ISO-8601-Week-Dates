@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace ReasonCodeExample.WeekDates.Tests
 {
     [TestFixture]
-    public class ExtensionTests
+    public class ExtensionsTests
     {
         [TestCase("2013-04-01", "2013-04-01", true)]
         [TestCase("2013-04-02", "2013-04-01", true)]
