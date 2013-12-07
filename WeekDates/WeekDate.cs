@@ -10,7 +10,7 @@ namespace ReasonCodeExample.WeekDates
     public class WeekDate : IComparable<WeekDate>, IEquatable<WeekDate>
     {
         /// <summary>
-        /// Start of this week.
+        /// Start of the week in which this date lies.
         /// </summary>
         public DateTime StartDate
         {
@@ -19,7 +19,7 @@ namespace ReasonCodeExample.WeekDates
         }
 
         /// <summary>
-        /// End of this week.
+        /// End of the week in which this date lies.
         /// </summary>
         public DateTime EndDate
         {
@@ -28,7 +28,7 @@ namespace ReasonCodeExample.WeekDates
         }
 
         /// <summary>
-        /// The year to which this week belongs.
+        /// The year to which the week in which this date lies belongs.
         /// </summary>
         public int Year
         {
@@ -37,7 +37,7 @@ namespace ReasonCodeExample.WeekDates
         }
 
         /// <summary>
-        /// Week of the year from #1 to #53.
+        /// Week of the year from 1 to 53.
         /// </summary>
         public int Week
         {
@@ -46,7 +46,7 @@ namespace ReasonCodeExample.WeekDates
         }
 
         /// <summary>
-        /// Day of the week from Monday (#1) to Sunday (#7).
+        /// Day of the week from Monday (1) to Sunday (7).
         /// </summary>
         public int Day
         {
