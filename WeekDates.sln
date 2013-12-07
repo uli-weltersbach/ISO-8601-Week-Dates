@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeekDates", "WeekDates\WeekDates.csproj", "{2868979A-AF4B-48F9-8EDB-D2221F56DCBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeekDates.Tests", "WeekDates.Tests\WeekDates.Tests.csproj", "{15E5248D-5D60-4D3D-8275-86BB904B0475}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,14 @@ Global
 		{2868979A-AF4B-48F9-8EDB-D2221F56DCBB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2868979A-AF4B-48F9-8EDB-D2221F56DCBB}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{2868979A-AF4B-48F9-8EDB-D2221F56DCBB}.Test|Any CPU.Build.0 = Test|Any CPU
+		{15E5248D-5D60-4D3D-8275-86BB904B0475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15E5248D-5D60-4D3D-8275-86BB904B0475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15E5248D-5D60-4D3D-8275-86BB904B0475}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{15E5248D-5D60-4D3D-8275-86BB904B0475}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{15E5248D-5D60-4D3D-8275-86BB904B0475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15E5248D-5D60-4D3D-8275-86BB904B0475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15E5248D-5D60-4D3D-8275-86BB904B0475}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{15E5248D-5D60-4D3D-8275-86BB904B0475}.Test|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

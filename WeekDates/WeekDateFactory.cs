@@ -11,6 +11,7 @@ namespace ReasonCodeExample.WeekDates
         private const int MaxWeek = 53;
         private const DayOfWeek FirstDayOfWeek = DayOfWeek.Monday;
         private const DayOfWeek LastDayOfWeek = DayOfWeek.Sunday;
+        private const DayOfWeek PivotDayOfWeek = DayOfWeek.Thursday;
 
         public WeekDate Create(DateTime date)
         {
@@ -81,14 +82,14 @@ namespace ReasonCodeExample.WeekDates
             if (week != MaxWeek)
                 return false;
             DateTime startDate = GetStartDate(date);
-            DateTime pivotDate = GetPivotDate(startDate);
+            DateTime pivotDate = GetPivotDate(date);
             return startDate.Year != pivotDate.Year;
         }
 
         private DateTime GetPivotDate(DateTime date)
         {
             DateTime startDate = GetStartDate(date);
-            return startDate.AddDays(GetIsoDay(DayOfWeek.Thursday) - GetIsoDay(startDate.DayOfWeek));
+            return startDate.AddDays(GetIsoDay(PivotDayOfWeek) - GetIsoDay(startDate.DayOfWeek));
         }
 
         private int GetIsoWeekYear(DateTime date)

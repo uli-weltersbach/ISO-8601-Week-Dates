@@ -14,7 +14,7 @@
     <!-- Change according to company naming convention -->
     <RootNamespace>ReasonCodeExample.WeekDates</RootNamespace>
     <!-- Change according to company naming convention -->
-    <AssemblyName>WeekDates</AssemblyName>
+    <AssemblyName>ReasonCodeExample.WeekDates</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -56,9 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\WeekDateFactoryTests.cs" />
-    <Compile Include="Tests\WeekDateTests.cs" />
     <Compile Include="WeekDate.cs" />
     <Compile Include="WeekDateFactory.cs" />
   </ItemGroup>
