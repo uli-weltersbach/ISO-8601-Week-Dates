@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace ReasonCodeExample.WeekDates
 {
@@ -93,6 +95,17 @@ namespace ReasonCodeExample.WeekDates
         private int GetIsoWeekYear(DateTime date)
         {
             return GetThursday(date).Year;
+        }
+
+        public IList<WeekDate> Create(DateTime from, DateTime to)
+        {
+            List<WeekDate> dates = new List<WeekDate>();
+            dates.Add(Create(from));
+            while (dates.Last().EndDate.Date <= to.Date)
+            {
+                dates.Add(Create(dates.Last().EndDate.AddDays(1)));
+            }
+            return dates;
         }
     }
 }

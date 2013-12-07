@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace ReasonCodeExample.WeekDates.Tests
@@ -22,6 +23,10 @@ namespace ReasonCodeExample.WeekDates.Tests
         [TestCase("2010-01-01", "2009-W53-5")]
         [TestCase("2010-01-02", "2009-W53-6")]
         [TestCase("2010-01-03", "2009-W53-7")]
+        [TestCase("2013-12-28", "2013-W52-6")]
+        [TestCase("2013-12-29", "2013-W52-7")]
+        [TestCase("2013-12-30", "2014-W01-1")]
+        [TestCase("2013-12-31", "2014-W01-2")]
         public void WeekDateConformsToISO8601(string date, string expectedWeekDate)
         {
             // Arrange
@@ -32,6 +37,21 @@ namespace ReasonCodeExample.WeekDates.Tests
 
             // Assert
             Assert.That(weekDateStringRepresentation, Is.EqualTo(expectedWeekDate));
+        }
+
+        [TestCase("2012-01-04", "2012-12-28", 52)]
+        [TestCase("2008-12-29", "2009-12-27", 53)]
+        public void WeekDateRangeIsCreatedCorrectly(string startDate, string endDate, int expectedWeekCount)
+        {
+            // Arrange
+            DateTime from = DateTime.Parse(startDate);
+            DateTime to = DateTime.Parse(endDate);
+
+            // Act
+            IList<WeekDate> weekDates = new WeekDateFactory().Create(from, to);
+
+            // Assert
+            Assert.That(weekDates.Count, Is.EqualTo(expectedWeekCount));
         }
     }
 }

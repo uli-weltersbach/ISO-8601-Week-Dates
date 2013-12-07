@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 
 namespace ReasonCodeExample.WeekDates
 {
@@ -8,7 +7,7 @@ namespace ReasonCodeExample.WeekDates
     /// See http://www.iso.org/iso/home/standards/iso8601.htm 
     /// and http://en.wikipedia.org/wiki/ISO_week_date for details. 
     /// </summary>
-    public class WeekDate
+    public class WeekDate : IComparable<WeekDate>, IEquatable<WeekDate>
     {
         /// <summary>
         /// Start of this week.
@@ -53,6 +52,16 @@ namespace ReasonCodeExample.WeekDates
         {
             get;
             set;
+        }
+
+        public int CompareTo(WeekDate other)
+        {
+            return other == null ? -1 : string.Compare(ToString(), other.ToString(), StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public bool Equals(WeekDate other)
+        {
+            return other != null && string.Equals(ToString(), other.ToString(), StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
