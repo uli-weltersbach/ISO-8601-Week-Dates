@@ -32,6 +32,20 @@ namespace ReasonCodeExample.WeekDates.Tests
             return string.IsNullOrEmpty(week) ? null : new WeekDate(DateTime.Parse(week));
         }
 
+        [Test]
+        public void WeeksAreEquatableFromDateTime()
+        {
+            // Arrange
+            DateTime date = DateTime.Now;
+            DateTime otherDate = DateTime.Now;
+
+            // Act
+            bool equalityResult = Extensions.IsSameWeekAs(date, otherDate);
+
+            // Assert
+            Assert.That(equalityResult, Is.True);
+        }
+
         [TestCase("2012-01-04", "2012-01-04", 1)]
         [TestCase("2012-01-04", "2012-12-28", 52)]
         [TestCase("2008-12-29", "2009-12-27", 53)]
