@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace ReasonCodeExample.WeekDates
 {
@@ -9,22 +10,37 @@ namespace ReasonCodeExample.WeekDates
     /// </summary>
     public class WeekDate : IComparable<WeekDate>, IEquatable<WeekDate>
     {
+        private const int MinWeek = 1;
+        private const int MaxWeek = 53;
+        private const DayOfWeek FirstDayOfWeek = DayOfWeek.Monday;
+        private const DayOfWeek LastDayOfWeek = DayOfWeek.Sunday;
+        private const DayOfWeek PivotDayOfWeek = DayOfWeek.Thursday;
+
+        public WeekDate(DateTime date)
+        {
+            Start = GetStartDate(date);
+            End = GetEndDate(date);
+            Day = GetIsoDay(date.DayOfWeek);
+            Week = GetIsoWeek(date);
+            Year = GetPivotDate(Start).Year;
+        }
+
         /// <summary>
         /// Start of the week in which this date lies.
         /// </summary>
-        public DateTime StartDate
+        public DateTime Start
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
         /// End of the week in which this date lies.
         /// </summary>
-        public DateTime EndDate
+        public DateTime End
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -33,43 +49,115 @@ namespace ReasonCodeExample.WeekDates
         public int Year
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
-        /// Week of the year from 1 to 53.
+        /// Week of the year, ranging from 1 to 53.
         /// </summary>
         public int Week
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
-        /// Day of the week from Monday (1) to Sunday (7).
+        /// Day of the week this instance represents, 
+        /// ranging from Monday (1) to Sunday (7).
         /// </summary>
         public int Day
         {
             get;
-            set;
+            private set;
         }
 
-        public int CompareTo(WeekDate other)
+        private DateTime GetStartDate(DateTime date)
         {
-            return other == null ? -1 : string.Compare(ToString(), other.ToString(), StringComparison.InvariantCultureIgnoreCase);
+            while (date.DayOfWeek != FirstDayOfWeek)
+            {
+                date = date.AddDays(-1);
+            }
+            return date;
         }
 
-        public bool Equals(WeekDate other)
+        private DateTime GetEndDate(DateTime date)
         {
-            return other != null && string.Equals(ToString(), other.ToString(), StringComparison.InvariantCultureIgnoreCase);
+            while (date.DayOfWeek != LastDayOfWeek)
+            {
+                date = date.AddDays(1);
+            }
+            return date;
+        }
+
+        private int GetIsoDay(DayOfWeek dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    return 1;
+                case DayOfWeek.Tuesday:
+                    return 2;
+                case DayOfWeek.Wednesday:
+                    return 3;
+                case DayOfWeek.Thursday:
+                    return 4;
+                case DayOfWeek.Friday:
+                    return 5;
+                case DayOfWeek.Saturday:
+                    return 6;
+                case DayOfWeek.Sunday:
+                    return 7;
+                default:
+                    throw new ArgumentOutOfRangeException("dayOfWeek", dayOfWeek, "Unknown day of week.");
+            }
+        }
+
+        private int GetIsoWeek(DateTime date)
+        {
+            int week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, FirstDayOfWeek);
+            return IsFirstWeekOfNextYear(date, week) ? MinWeek : week;
+        }
+
+        private bool IsFirstWeekOfNextYear(DateTime date, int week)
+        {
+            if (week != MaxWeek)
+                return false;
+            DateTime startDate = GetStartDate(date);
+            DateTime pivotDate = GetPivotDate(date);
+            return startDate.Year != pivotDate.Year;
+        }
+
+        private DateTime GetPivotDate(DateTime startDate)
+        {
+            return startDate.AddDays(GetIsoDay(PivotDayOfWeek) - GetIsoDay(startDate.DayOfWeek));
         }
 
         /// <summary>
-        /// Returns a sortable ISO week string.
+        /// Returns a sortable ISO week date string.
         /// </summary>
         public override string ToString()
         {
             return string.Format("{0}-W{1:00}-{2}", Year, Week, Day);
+        }
+
+        public int CompareTo(WeekDate other)
+        {
+            return other == null ? -1 : string.Compare(ToString(), other.ToString(), StringComparison.Ordinal);
+        }
+
+        public bool Equals(WeekDate other)
+        {
+            return other != null && string.Equals(ToString(), other.ToString(), StringComparison.Ordinal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as WeekDate);
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 }
