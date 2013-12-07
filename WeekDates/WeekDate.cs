@@ -114,13 +114,13 @@ namespace ReasonCodeExample.WeekDates
 
         private int GetIsoWeek(DateTime date)
         {
-            int week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, FirstDayOfWeek);
-            return IsFirstWeekOfNextYear(date, week) ? MinWeek : week;
+            int gregorianCalendarWeek = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, FirstDayOfWeek);
+            return IsFirstWeekOfNextYear(date, gregorianCalendarWeek) ? MinWeek : gregorianCalendarWeek;
         }
 
-        private bool IsFirstWeekOfNextYear(DateTime date, int week)
+        private bool IsFirstWeekOfNextYear(DateTime date, int gregorianCalendarWeek)
         {
-            if (week != MaxWeek)
+            if (gregorianCalendarWeek != MaxWeek)
                 return false;
             DateTime startDate = GetStartDate(date);
             DateTime pivotDate = GetPivotDate(date);
