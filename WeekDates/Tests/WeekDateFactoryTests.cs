@@ -39,6 +39,7 @@ namespace ReasonCodeExample.WeekDates.Tests
             Assert.That(weekDateStringRepresentation, Is.EqualTo(expectedWeekDate));
         }
 
+        [TestCase("2012-01-04", "2012-01-04", 1)]
         [TestCase("2012-01-04", "2012-12-28", 52)]
         [TestCase("2008-12-29", "2009-12-27", 53)]
         public void WeekDateRangeIsCreatedCorrectly(string startDate, string endDate, int expectedWeekCount)

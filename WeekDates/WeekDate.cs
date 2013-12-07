@@ -3,7 +3,7 @@
 namespace ReasonCodeExample.WeekDates
 {
     /// <summary>
-    /// Represents an ISO 8601 compliant week.
+    /// Represents a date in a ISO 8601 compliant week.
     /// See http://www.iso.org/iso/home/standards/iso8601.htm 
     /// and http://en.wikipedia.org/wiki/ISO_week_date for details. 
     /// </summary>
