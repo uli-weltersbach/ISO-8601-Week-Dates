@@ -28,7 +28,7 @@ namespace ReasonCodeExample.WeekDates
         }
 
         /// <summary>
-        /// The year to which the week in which this date lies belongs.
+        /// The year to which this week belongs.
         /// </summary>
         public int Year
         {
