@@ -68,7 +68,7 @@ namespace ReasonCodeExample.WeekDates
         private int GetIsoWeek(DateTime date)
         {
             int week = GetWeek(date);
-            return IsFirstWeekOfYear(date, week) ? MinWeek : week;
+            return IsFirstWeekOfNextYear(date, week) ? MinWeek : week;
         }
 
         private int GetWeek(DateTime date)
@@ -76,17 +76,16 @@ namespace ReasonCodeExample.WeekDates
             return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, FirstDayOfWeek);
         }
 
-        private bool IsFirstWeekOfYear(DateTime date, int week)
+        private bool IsFirstWeekOfNextYear(DateTime date, int week)
         {
             if (week != MaxWeek)
                 return false;
             DateTime startDate = GetStartDate(date);
-            DateTime endDate = GetEndDate(date);
-            DateTime thursday = GetThursday(endDate);
-            return startDate.Year != thursday.Year;
+            DateTime pivotDate = GetPivotDate(startDate);
+            return startDate.Year != pivotDate.Year;
         }
 
-        private DateTime GetThursday(DateTime date)
+        private DateTime GetPivotDate(DateTime date)
         {
             DateTime startDate = GetStartDate(date);
             return startDate.AddDays(GetIsoDay(DayOfWeek.Thursday) - GetIsoDay(startDate.DayOfWeek));
@@ -94,7 +93,7 @@ namespace ReasonCodeExample.WeekDates
 
         private int GetIsoWeekYear(DateTime date)
         {
-            return GetThursday(date).Year;
+            return GetPivotDate(date).Year;
         }
 
         public IList<WeekDate> Create(DateTime from, DateTime to)
