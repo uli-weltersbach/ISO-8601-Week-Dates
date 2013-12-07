@@ -4,40 +4,60 @@ using System.Globalization;
 namespace ReasonCodeExample.WeekDates
 {
     /// <summary>
-    /// Represents an ISO8601 compliant week.
+    /// Represents an ISO 8601 compliant week.
+    /// See http://www.iso.org/iso/home/standards/iso8601.htm 
+    /// and http://en.wikipedia.org/wiki/ISO_week_date for details. 
     /// </summary>
     public class WeekDate
     {
+        /// <summary>
+        /// Start of this week.
+        /// </summary>
         public DateTime StartDate
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// End of this week.
+        /// </summary>
         public DateTime EndDate
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The year to which this week belongs.
+        /// </summary>
         public int Year
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Week of the year from #1 to #53.
+        /// </summary>
         public int Week
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Day of the week from Monday (#1) to Sunday (#7).
+        /// </summary>
         public int Day
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Returns a sortable ISO week string.
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0}-W{1:00}-{2}", Year, Week, Day);

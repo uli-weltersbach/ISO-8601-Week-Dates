@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Web;
 
 namespace ReasonCodeExample.WeekDates
 {
@@ -21,21 +18,25 @@ namespace ReasonCodeExample.WeekDates
                     EndDate = GetEndDate(date),
                     Day = GetIsoDay(date.DayOfWeek),
                     Week = GetIsoWeek(date),
-                    Year = GetWeekYear(date)
+                    Year = GetIsoWeekYear(date)
                 };
         }
 
         private DateTime GetStartDate(DateTime date)
         {
             while (date.DayOfWeek != FirstDayOfWeek)
+            {
                 date = date.AddDays(-1);
+            }
             return date;
         }
 
         private DateTime GetEndDate(DateTime date)
         {
             while (date.DayOfWeek != LastDayOfWeek)
+            {
                 date = date.AddDays(1);
+            }
             return date;
         }
 
@@ -58,29 +59,14 @@ namespace ReasonCodeExample.WeekDates
                 case DayOfWeek.Sunday:
                     return 7;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("dayOfWeek", dayOfWeek, "Unknown day of week.");
             }
         }
 
         private int GetIsoWeek(DateTime date)
         {
             int week = GetWeek(date);
-            bool shouldAdjustWeek;
-            if (week == MaxWeek)
-            {
-                shouldAdjustWeek = ShouldAdjustWeek(date);
-                if (shouldAdjustWeek)
-                    return MinWeek;
-            }
-            return week;
-        }
-
-        private bool ShouldAdjustWeek(DateTime date)
-        {
-            DateTime startDate = GetStartDate(date);
-            DateTime endDate = GetEndDate(date);
-            DateTime thursday = GetThursday(endDate);
-            return thursday.Year != startDate.Year;
+            return IsFirstWeekOfYear(date, week) ? MinWeek : week;
         }
 
         private int GetWeek(DateTime date)
@@ -88,17 +74,25 @@ namespace ReasonCodeExample.WeekDates
             return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, FirstDayOfWeek);
         }
 
-        private int GetWeekYear(DateTime date)
+        private bool IsFirstWeekOfYear(DateTime date, int week)
         {
-            // ISO 8601 states that the year to which a week "belongs" 
-            // is defined by the "placement" of thursday
-            return GetThursday(date).Year;
+            if (week != MaxWeek)
+                return false;
+            DateTime startDate = GetStartDate(date);
+            DateTime endDate = GetEndDate(date);
+            DateTime thursday = GetThursday(endDate);
+            return startDate.Year != thursday.Year;
         }
 
         private DateTime GetThursday(DateTime date)
         {
             DateTime startDate = GetStartDate(date);
             return startDate.AddDays(GetIsoDay(DayOfWeek.Thursday) - GetIsoDay(startDate.DayOfWeek));
+        }
+
+        private int GetIsoWeekYear(DateTime date)
+        {
+            return GetThursday(date).Year;
         }
     }
 }
