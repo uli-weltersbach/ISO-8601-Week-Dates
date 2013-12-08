@@ -18,60 +18,54 @@ namespace ReasonCodeExample.WeekDates
 
         public WeekDate(DateTime date)
         {
-            Start = GetStartDate(date);
-            End = GetEndDate(date);
-            Day = GetIsoDay(date.DayOfWeek);
-            Week = GetIsoWeek(date);
-            Year = GetPivotDate(Start).Year;
+            StartOfWeek = GetStartOfWeek(date);
+            EndOfWeek = GetEndOfWeek(date);
+            DayOfWeek = date.DayOfWeek;
+            WeekNumber = GetWeekNumber(date);
+            Year = GetPivotDayOfWeek(StartOfWeek).Year;
         }
 
-        /// <summary>
-        /// Start of the week in which this date lies.
-        /// </summary>
-        public DateTime Start
+        public DateTime StartOfWeek
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// End of the week in which this date lies.
-        /// </summary>
-        public DateTime End
+        public DateTime EndOfWeek
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// The year to which this week belongs.
-        /// </summary>
+        public DayOfWeek DayOfWeek
+        {
+            get;
+            private set;
+        }
+
+        public int WeekNumber
+        {
+            get;
+            private set;
+        }
+
         public int Year
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Week of the year, ranging from 1 to 53.
-        /// </summary>
-        public int Week
+        public int CompareTo(WeekDate other)
         {
-            get;
-            private set;
+            return other == null ? -1 : string.Compare(ToString(), other.ToString(), StringComparison.Ordinal);
         }
 
-        /// <summary>
-        /// Day of the week this instance represents, 
-        /// ranging from Monday (1) to Sunday (7).
-        /// </summary>
-        public int Day
+        public bool Equals(WeekDate other)
         {
-            get;
-            private set;
+            return other != null && string.Equals(ToString(), other.ToString(), StringComparison.Ordinal);
         }
 
-        private DateTime GetStartDate(DateTime date)
+        private DateTime GetStartOfWeek(DateTime date)
         {
             while (date.DayOfWeek != FirstDayOfWeek)
             {
@@ -80,7 +74,7 @@ namespace ReasonCodeExample.WeekDates
             return date;
         }
 
-        private DateTime GetEndDate(DateTime date)
+        private DateTime GetEndOfWeek(DateTime date)
         {
             while (date.DayOfWeek != LastDayOfWeek)
             {
@@ -89,7 +83,7 @@ namespace ReasonCodeExample.WeekDates
             return date;
         }
 
-        private int GetIsoDay(DayOfWeek dayOfWeek)
+        private int GetDayNumber(DayOfWeek dayOfWeek)
         {
             switch (dayOfWeek)
             {
@@ -112,24 +106,24 @@ namespace ReasonCodeExample.WeekDates
             }
         }
 
-        private int GetIsoWeek(DateTime date)
+        private int GetWeekNumber(DateTime date)
         {
-            int gregorianCalendarWeek = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, FirstDayOfWeek);
-            return IsFirstWeekOfNextYear(date, gregorianCalendarWeek) ? MinWeek : gregorianCalendarWeek;
+            int weekNumber = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, FirstDayOfWeek);
+            return IsFirstWeekOfNextYear(date, weekNumber) ? MinWeek : weekNumber;
         }
 
-        private bool IsFirstWeekOfNextYear(DateTime date, int gregorianCalendarWeek)
+        private bool IsFirstWeekOfNextYear(DateTime date, int weekNumber)
         {
-            if (gregorianCalendarWeek != MaxWeek)
+            if (weekNumber != MaxWeek)
                 return false;
-            DateTime startDate = GetStartDate(date);
-            DateTime pivotDate = GetPivotDate(date);
+            DateTime startDate = GetStartOfWeek(date);
+            DateTime pivotDate = GetPivotDayOfWeek(date);
             return startDate.Year != pivotDate.Year;
         }
 
-        private DateTime GetPivotDate(DateTime startDate)
+        private DateTime GetPivotDayOfWeek(DateTime startDate)
         {
-            return startDate.AddDays(GetIsoDay(PivotDayOfWeek) - GetIsoDay(startDate.DayOfWeek));
+            return startDate.AddDays(GetDayNumber(PivotDayOfWeek) - GetDayNumber(startDate.DayOfWeek));
         }
 
         /// <summary>
@@ -137,17 +131,7 @@ namespace ReasonCodeExample.WeekDates
         /// </summary>
         public override string ToString()
         {
-            return string.Format("{0}-W{1:00}-{2}", Year, Week, Day);
-        }
-
-        public int CompareTo(WeekDate other)
-        {
-            return other == null ? -1 : string.Compare(ToString(), other.ToString(), StringComparison.Ordinal);
-        }
-
-        public bool Equals(WeekDate other)
-        {
-            return other != null && string.Equals(ToString(), other.ToString(), StringComparison.Ordinal);
+            return string.Format("{0}-W{1:00}-{2}", Year, WeekNumber, GetDayNumber(DayOfWeek));
         }
 
         public override bool Equals(object obj)
