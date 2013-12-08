@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 
@@ -11,18 +10,18 @@ namespace ReasonCodeExample.WeekDates
     /// </summary>
     public class Week : IComparable<Week>, IEquatable<Week>
     {
-        private const int MinWeek = 1;
-        private const int MaxWeek = 53;
         private const DayOfWeek FirstDayOfWeek = DayOfWeek.Monday;
         private const DayOfWeek LastDayOfWeek = DayOfWeek.Sunday;
         private const DayOfWeek PivotDayOfWeek = DayOfWeek.Thursday;
+        private static readonly Calendar Calendar = CultureInfo.InvariantCulture.Calendar;
 
         public Week(DateTime date)
         {
             StartOfWeek = GetStartOfWeek(date);
             EndOfWeek = GetEndOfWeek(date);
-            WeekNumber = GetWeekNumber(StartOfWeek);
-            Year = GetPivotDayOfWeek(StartOfWeek).Year;
+            DateTime pivotDayOfWeek = GetPivotDayOfWeek(StartOfWeek);
+            WeekNumber = Calendar.GetWeekOfYear(pivotDayOfWeek, CalendarWeekRule.FirstFourDayWeek, FirstDayOfWeek);
+            WeekYear = pivotDayOfWeek.Year;
         }
 
         public DateTime StartOfWeek
@@ -43,7 +42,7 @@ namespace ReasonCodeExample.WeekDates
             private set;
         }
 
-        public int Year
+        public int WeekYear
         {
             get;
             private set;
@@ -67,20 +66,6 @@ namespace ReasonCodeExample.WeekDates
             return date;
         }
 
-        private int GetWeekNumber(DateTime startOfWeek)
-        {
-            int weekNumber = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(startOfWeek, CalendarWeekRule.FirstFourDayWeek, FirstDayOfWeek);
-            return IsFirstWeekOfNextYear(startOfWeek, weekNumber) ? MinWeek : weekNumber;
-        }
-
-        private bool IsFirstWeekOfNextYear(DateTime startOfWeek, int weekNumber)
-        {
-            if (weekNumber < MaxWeek)
-                return false;
-            DateTime pivotOfWeek = GetPivotDayOfWeek(startOfWeek);
-            return startOfWeek.Year < pivotOfWeek.Year;
-        }
-
         private DateTime GetPivotDayOfWeek(DateTime startOfWeek)
         {
             while (startOfWeek.DayOfWeek != PivotDayOfWeek)
@@ -95,7 +80,7 @@ namespace ReasonCodeExample.WeekDates
         /// </summary>
         public override string ToString()
         {
-            return string.Format("{0}-W{1:00}", Year, WeekNumber);
+            return string.Format("{0}-W{1:00}", WeekYear, WeekNumber);
         }
 
         public int CompareTo(Week other)

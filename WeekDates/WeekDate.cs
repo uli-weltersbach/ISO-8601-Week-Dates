@@ -26,7 +26,7 @@ namespace ReasonCodeExample.WeekDates
         /// </summary>
         public override string ToString()
         {
-            return string.Format("{0}-W{1:00}-{2}", Year, WeekNumber, GetDayNumber(DayOfWeek));
+            return string.Format("{0}-W{1:00}-{2}", WeekYear, WeekNumber, GetDayNumber(DayOfWeek));
         }
 
         private int GetDayNumber(DayOfWeek dayOfWeek)
