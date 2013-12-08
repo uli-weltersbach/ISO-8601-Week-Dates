@@ -32,46 +32,46 @@ namespace ReasonCodeExample.WeekDates.Tests
             WeekDate weekDate = new WeekDate(DateTime.Parse(date));
 
             // Act
-            string weekDateStringRepresentation = weekDate.ToString();
+            string sortableWeekDate = weekDate.ToString();
 
             // Assert
-            Assert.That(weekDateStringRepresentation, Is.EqualTo(expectedWeekDate));
+            Assert.That(sortableWeekDate, Is.EqualTo(expectedWeekDate));
         }
 
         [TestCase("2013-04-01", null, -1)]
         [TestCase("2013-04-01", "2013-04-02", -1)]
         [TestCase("2013-04-01", "2013-04-01", 0)]
         [TestCase("2013-04-02", "2013-04-01", 1)]
-        public void WeekDatesAreComparable(string week, string otherWeek, int expectedComparisonResult)
+        public void WeekDatesAreComparable(string date, string otherDate, int expectedComparisonResult)
         {
             // Arrange
-            WeekDate date = ParseWeekDate(week);
-            WeekDate otherDate = ParseWeekDate(otherWeek);
+            WeekDate weekDate = ParseWeekDate(date);
+            WeekDate otherWeekDate = ParseWeekDate(otherDate);
 
             // Act
-            int comparisonResult = date.CompareTo(otherDate);
+            int comparisonResult = weekDate.CompareTo(otherWeekDate);
 
             // Assert
             Assert.That(comparisonResult, Is.EqualTo(expectedComparisonResult));
         }
 
-        private WeekDate ParseWeekDate(string week)
+        private WeekDate ParseWeekDate(string weekDate)
         {
-            return string.IsNullOrEmpty(week) ? null : new WeekDate(DateTime.Parse(week));
+            return string.IsNullOrEmpty(weekDate) ? null : new WeekDate(DateTime.Parse(weekDate));
         }
 
         [TestCase("2013-04-01", null, false)]
         [TestCase("2013-04-01", "2013-04-02", false)]
         [TestCase("2013-04-01", "2013-04-01", true)]
         [TestCase("2013-04-02", "2013-04-01", false)]
-        public void WeekDatesAreEquatable(string week, string otherWeek, bool expectedEqualityResult)
+        public void WeekDatesAreEquatable(string date, string otherDate, bool expectedEqualityResult)
         {
             // Arrange
-            WeekDate date = ParseWeekDate(week);
-            WeekDate otherDate = ParseWeekDate(otherWeek);
+            WeekDate weekDate = ParseWeekDate(date);
+            WeekDate otherWeekDate = ParseWeekDate(otherDate);
 
             // Act
-            bool equalityResult = date.Equals(otherDate);
+            bool equalityResult = weekDate.Equals(otherWeekDate);
 
             // Assert
             Assert.That(equalityResult, Is.EqualTo(expectedEqualityResult));
