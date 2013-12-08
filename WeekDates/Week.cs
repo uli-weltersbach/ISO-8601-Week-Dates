@@ -7,6 +7,8 @@ namespace ReasonCodeExample.WeekDates
 {
     /// <summary>
     /// Represents a ISO 8601 compliant week.
+    /// See http://www.iso.org/iso/home/standards/iso8601.htm 
+    /// and http://en.wikipedia.org/wiki/ISO_week_date for details. 
     /// </summary>
     public class Week : IComparable<Week>, IEquatable<Week>
     {

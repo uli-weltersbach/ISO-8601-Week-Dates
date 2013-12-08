@@ -98,7 +98,7 @@ namespace ReasonCodeExample.WeekDates.Tests
         [TestCase("2009-01-04", "2010-01-03", 53)] // End of first week to end of last week
         [TestCase("2008-12-29", "2010-01-03", 53)] // Start of first week to end of last week
         [TestCase("2012-01-04", "2012-01-04", 1)]
-        [TestCase("2012-01-04", "2012-12-28", 52)]
+        [TestCase("2012-01-02", "2012-12-30", 52)]
         [TestCase("2013-12-23", "2013-12-29", 1)]
         [TestCase("2013-12-30", "2014-01-05", 1)]
         [TestCase("2013-12-23", "2014-01-05", 2)]

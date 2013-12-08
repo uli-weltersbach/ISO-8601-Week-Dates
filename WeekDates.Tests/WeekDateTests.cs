@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace ReasonCodeExample.WeekDates.Tests
@@ -75,6 +76,28 @@ namespace ReasonCodeExample.WeekDates.Tests
 
             // Assert
             Assert.That(equalityResult, Is.EqualTo(expectedEqualityResult));
+        }
+
+        [TestCase("2008-12-29", "2009-12-28", 53 * 7 - 6)] // Start of first week to start of last week
+        [TestCase("2009-01-04", "2010-01-03", 53 * 7 - 6)] // End of first week to end of last week
+        [TestCase("2008-12-29", "2010-01-03", 53 * 7)] // Start of first week to end of last week
+        [TestCase("2012-01-04", "2012-01-04", 1)]
+        [TestCase("2012-01-02", "2012-12-30", 52 * 7)]
+        [TestCase("2013-12-23", "2013-12-29", 1 * 7)]
+        [TestCase("2013-12-30", "2014-01-05", 1 * 7)]
+        [TestCase("2013-12-23", "2014-01-05", 2 * 7)]
+        [TestCase("2014-01-05", "2014-01-10", 6)]
+        public void WeekDateRangeIsCorrect(string startDate, string endDate, int expectedWeekDateCount)
+        {
+            // Arrange
+            DateTime from = DateTime.Parse(startDate);
+            DateTime to = DateTime.Parse(endDate);
+
+            // Act
+            IList<WeekDate> weekDates = WeekDate.GetWeekDates(from, to);
+
+            // Assert
+            Assert.That(weekDates.Count, Is.EqualTo(expectedWeekDateCount));
         }
     }
 }

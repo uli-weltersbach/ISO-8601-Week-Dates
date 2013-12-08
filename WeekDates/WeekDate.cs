@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ReasonCodeExample.WeekDates
 {
@@ -9,13 +11,16 @@ namespace ReasonCodeExample.WeekDates
     /// </summary>
     public class WeekDate : Week
     {
+        private readonly DateTime _date;
+
         public WeekDate(DateTime date)
             : base(date)
         {
-            DayOfWeek = date.DayOfWeek;
+            _date = date;
+            DayNumber = GetDayNumber(date.DayOfWeek);
         }
 
-        public DayOfWeek DayOfWeek
+        public int DayNumber
         {
             get;
             private set;
@@ -26,7 +31,7 @@ namespace ReasonCodeExample.WeekDates
         /// </summary>
         public override string ToString()
         {
-            return string.Format("{0}-W{1:00}-{2}", WeekYear, WeekNumber, GetDayNumber(DayOfWeek));
+            return string.Format("{0}-W{1:00}-{2}", WeekYear, WeekNumber, DayNumber);
         }
 
         private int GetDayNumber(DayOfWeek dayOfWeek)
@@ -50,6 +55,18 @@ namespace ReasonCodeExample.WeekDates
                 default:
                     throw new ArgumentOutOfRangeException("dayOfWeek", dayOfWeek, "Unknown day of week.");
             }
+        }
+
+        public static IList<WeekDate> GetWeekDates(DateTime from, DateTime to)
+        {
+            List<WeekDate> weekDates = new List<WeekDate>();
+            weekDates.Add(new WeekDate(from));
+            while (weekDates.Last()._date < to.Date)
+            {
+                DateTime nextDay = weekDates.Last()._date.AddDays(1);
+                weekDates.Add(new WeekDate(nextDay));
+            }
+            return weekDates;
         }
     }
 }
